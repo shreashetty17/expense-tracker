@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Expense Tracker</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Expense Tracker</h1>
+
+    <form action="/set_budget" method="POST">
+
+        <input
+            type="number"
+            step="0.01"
+            name="budget"
+            placeholder="Enter Budget"
+            required>
+
+        <button type="submit">
+            Set Budget
+        </button>
+
+    </form>
+
+    <div class="summary">
+
+        <div class="card">
+            <h3>Available</h3>
+            <p>₹{{ budget }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Spent</h3>
+            <p>₹{{ total }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Remaining</h3>
+            <p>₹{{ remaining }}</p>
+        </div>
+
+    </div>
+
+    <form action="/add" method="POST">
+
+        <input
+            type="text"
+            name="name"
+            placeholder="Expense Name"
+            required>
+
+        <input
+            type="number"
+            step="0.01"
+            name="amount"
+            placeholder="Amount"
+            required>
+
+        <select name="category">
+            <option>Food</option>
+            <option>Travel</option>
+            <option>Shopping</option>
+            <option>Other</option>
+        </select>
+
+        <button type="submit">
+            Add Expense
+        </button>
+
+    </form>
+
+    <table>
+
+        <tr>
+            <th>Date</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Amount</th>
+            <th>Action</th>
+        </tr>
+
+        {% for expense in expenses %}
+
+        <tr>
+            <td>{{ expense[0] }}</td>
+            <td>{{ expense[1] }}</td>
+            <td>{{ expense[2] }}</td>
+            <td>₹{{ expense[3] }}</td>
+
+            <td>
+                <a href="/delete/{{ loop.index0 }}">
+                    Delete
+                </a>
+            </td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</div>
+
+</body>
+</html>
