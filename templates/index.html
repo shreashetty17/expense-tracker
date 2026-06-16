@@ -1,111 +1,57 @@
-<!DOCTYPE html>
-<html>
+<h1>Expense Tracker</h1>
 
-<head>
-    <title>Expense Tracker</title>
+<!-- SET BUDGET -->
+<form action="/set_budget" method="POST">
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
-</head>
+    <input 
+        type="number"
+        name="budget"
+        placeholder="Set Budget"
+        required>
 
-<body>
+    <button type="submit">
+        Set Budget
+    </button>
 
-<div class="container">
+</form>
 
-    <h1>Expense Tracker</h1>
+<hr>
 
-    <form action="/set_budget" method="POST">
+<h2>Budget: ₹{{ budget }}</h2>
+<h2>Total Spent: ₹{{ total }}</h2>
+<h2>Remaining: ₹{{ remaining }}</h2>
 
-        <input
-            type="number"
-            step="0.01"
-            name="budget"
-            placeholder="Enter Budget"
-            required>
+<hr>
 
-        <button type="submit">
-            Set Budget
-        </button>
+<!-- ADD EXPENSE -->
+<form action="/add" method="POST">
 
-    </form>
+    <input 
+        type="text"
+        name="name"
+        placeholder="Expense name"
+        required>
 
-    <div class="summary">
+    <input 
+        type="number"
+        name="amount"
+        placeholder="Amount"
+        required>
 
-        <div class="card">
-            <h3>Available</h3>
-            <p>₹{{ budget }}</p>
-        </div>
+    <button type="submit">
+        Add Expense
+    </button>
 
-        <div class="card">
-            <h3>Spent</h3>
-            <p>₹{{ total }}</p>
-        </div>
+</form>
 
-        <div class="card">
-            <h3>Remaining</h3>
-            <p>₹{{ remaining }}</p>
-        </div>
+<hr>
 
-    </div>
+<h2>Expenses</h2>
 
-    <form action="/add" method="POST">
+{% for expense in expenses %}
 
-        <input
-            type="text"
-            name="name"
-            placeholder="Expense Name"
-            required>
+    <p>
+        {{ expense.name }} - ₹{{ expense.amount }}
+    </p>
 
-        <input
-            type="number"
-            step="0.01"
-            name="amount"
-            placeholder="Amount"
-            required>
-
-        <select name="category">
-            <option>Food</option>
-            <option>Travel</option>
-            <option>Shopping</option>
-            <option>Other</option>
-        </select>
-
-        <button type="submit">
-            Add Expense
-        </button>
-
-    </form>
-
-    <table>
-
-        <tr>
-            <th>Date</th>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Amount</th>
-            <th>Action</th>
-        </tr>
-
-        {% for expense in expenses %}
-
-        <tr>
-            <td>{{ expense[0] }}</td>
-            <td>{{ expense[1] }}</td>
-            <td>{{ expense[2] }}</td>
-            <td>₹{{ expense[3] }}</td>
-
-            <td>
-                <a href="/delete/{{ loop.index0 }}">
-                    Delete
-                </a>
-            </td>
-        </tr>
-
-        {% endfor %}
-
-    </table>
-
-</div>
-
-</body>
-</html>
+{% endfor %}
